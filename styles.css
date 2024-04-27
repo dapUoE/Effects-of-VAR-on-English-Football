@@ -15,6 +15,12 @@ article {
     padding: 20px;
 }
 
+@media (min-width: 768px) {
+    article {
+        margin: 0 20%;
+    }
+}
+
 p {
     font-family: 'Arial', sans-serif;
     font-size: 16px; /* Choose your font size */
