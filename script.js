@@ -42,7 +42,7 @@ function initializeFoulsChart(canvasId) {
 
 function initializeYellowCardsChart(canvasId) {
     // Fetch data and initialize the cards chart
-    fetchChartData('card_data.json', canvasId, {
+    fetchChartData('foul_data.json', canvasId, {
         label: 'Yellow Cards Per Season',
         borderColor: 'rgb(54, 162, 235)',
         backgroundColor: 'rgba(54, 162, 235, 0.5)'
@@ -51,7 +51,7 @@ function initializeYellowCardsChart(canvasId) {
 
 function initializeRedCardsChart(canvasId) {
     // Fetch data and initialize the red cards chart
-    fetchChartData('card_data.json', canvasId, {
+    fetchChartData('foul_data.json', canvasId, {
         label: 'Red Cards Per Season',
         borderColor: 'rgb(255, 205, 86)',
         backgroundColor: 'rgba(255, 205, 86, 0.5)'
