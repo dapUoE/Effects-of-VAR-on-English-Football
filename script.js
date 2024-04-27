@@ -92,7 +92,7 @@ function initializeGoalsChart(canvasId) {
 }
 
 function initializeHomeAndAwayGoalsChart(canvasId) {
-    fetch('goals_data.json')
+    fetch('goal_data.json')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
