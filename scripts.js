@@ -1,13 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('foul_data.json')
-        .then(response => response.json())
+    fetch('foul_data.json')  // Make sure the path is correct
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             const seasons = data.map(item => item.Season);
             const totalFouls = data.map(item => item.Total_Fouls);
 
             const ctx = document.getElementById('foulsChart').getContext('2d');
+            if (!ctx) {
+                throw new Error('Failed to get canvas context');
+            }
             const foulsChart = new Chart(ctx, {
-                type: 'line', // Line chart to show progression over seasons
+                type: 'line',
                 data: {
                     labels: seasons,
                     datasets: [{
@@ -26,12 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     },
                     animation: {
-                        duration: 2000 // Animation can be adjusted as needed
+                        duration: 2000 // Make sure the duration is reasonable
                     },
                     responsive: true,
                     maintainAspectRatio: false
                 }
             });
         })
-        .catch(error => console.error('Error loading the data:', error));
+        .catch(error => {
+            console.error('Error loading the data:', error);
+            alert('Failed to load data: ' + error.message);
+        });
 });
