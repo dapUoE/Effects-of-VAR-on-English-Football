@@ -47,3 +47,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     );
 });
+
+document.addEventListener('scroll', () => {
+    // Check if the user scrolled to the bottom of the page
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        loadMoreContent();
+    }
+});
+
+function loadMoreContent() {
+    // Placeholder for loading more content
+    const content = document.getElementById('content');
+    const newDiv = document.createElement('div');
+    newDiv.innerHTML = 'More content loaded...';
+    newDiv.classList.add('new-item'); // Apply animation class
+    content.appendChild(newDiv);
+}
+
+
+
