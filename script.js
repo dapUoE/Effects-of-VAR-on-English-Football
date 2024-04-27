@@ -201,7 +201,6 @@ function initializeTeamPerformanceChart(canvasId) {
                             align: 'end',
                             anchor: 'end',
                             formatter: function(value, context) {
-                                // Display VAR Impact Ratio at the end of the bar
                                 return context.datasetIndex === 1 ? varImpactRatio[context.dataIndex].toFixed(2) : '';
                             },
                             color: '#444',
@@ -212,32 +211,21 @@ function initializeTeamPerformanceChart(canvasId) {
                         tooltip: {
                             callbacks: {
                                 title: function(tooltipItems, data) {
-                                    // Safely access the first item, check if it exists
-                                    if (tooltipItems.length > 0 && data.labels) {
-                                        return data.labels[tooltipItems[0].dataIndex];
-                                    }
-                                    return '';
+                                    // Check for data existence safely
+                                    return tooltipItems.length > 0 && tooltipItems[0].dataIndex < data.labels.length ? data.labels[tooltipItems[0].dataIndex] : '';
                                 },
                                 label: function(tooltipItem, data) {
                                     // Ensure safe access to the datasets and parsed values
-                                    if (data.datasets && tooltipItem.datasetIndex < data.datasets.length) {
-                                        const dataset = data.datasets[tooltipItem.datasetIndex];
-                                        if (dataset && 'parsed' in tooltipItem && tooltipItem.parsed.x !== undefined) {
-                                            return `${dataset.label}: ${tooltipItem.parsed.x} points`;
-                                        }
-                                    }
-                                    return '';
+                                    return tooltipItem.datasetIndex < data.datasets.length && 'parsed' in tooltipItem && tooltipItem.parsed.x !== undefined ?
+                                        `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.parsed.x} points` : '';
                                 },
-                                footer: function(tooltipItems) {
-                                    // Ensure the VAR impact ratio array exists and has the same length as labels
-                                    if (tooltipItems.length > 0 && varImpactRatio && tooltipItems[0].dataIndex < varImpactRatio.length) {
-                                        return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
-                                    }
-                                    return '';
+                                footer: function(tooltipItems, data) {
+                                    // Ensure the VAR impact ratio array exists and matches the data length
+                                    return tooltipItems.length > 0 && tooltipItems[0].dataIndex < varImpactRatio.length ?
+                                        `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}` : '';
                                 }
                             }
                         },
-                        
                         legend: {
                             display: true
                         }
@@ -251,6 +239,7 @@ function initializeTeamPerformanceChart(canvasId) {
             console.error('Error loading the data:', error);
         });
 }
+
 
 
 
