@@ -163,14 +163,25 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
 
 function initializeTeamPerformanceChart(canvasId) {
     fetch('team_data.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
         .then(data => {
+            if (!data || !Array.isArray(data) || !data.length) {
+                throw new Error('Data is empty or not properly formatted');
+            }
+
             const teamLabels = data.map(item => item.Team);
             const pointsPreVAR = data.map(item => item.Points_Per_Game_Pre_VAR);
             const pointsPostVAR = data.map(item => item.Points_Per_Game_Post_VAR);
             const varImpactRatio = data.map(item => item.VAR_Impact_Ratio);
 
             const ctx = document.getElementById(canvasId).getContext('2d');
+            if (!ctx) {
+                throw new Error('Canvas context could not be obtained');
+            }
+
             const teamPerformanceChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -199,37 +210,31 @@ function initializeTeamPerformanceChart(canvasId) {
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                title: function(tooltipItems, data) {
-                                    // Check the existence of tooltipItems[0] and data.labels safely
-                                    if (tooltipItems.length > 0 && data.labels && tooltipItems[0].dataIndex < data.labels.length) {
-                                        return data.labels[tooltipItems[0].dataIndex];
+                                title: function(tooltipItems) {
+                                    try {
+                                        return tooltipItems[0]?.dataIndex !== undefined ? this._chart.data.labels[tooltipItems[0].dataIndex] : '';
+                                    } catch (error) {
+                                        console.error('Error accessing tooltip title:', error);
+                                        return '';
                                     }
-                                    return '';
                                 },
-                                label: function(tooltipItem, data) {
-                                    // Ensure safe access to datasets and parsed values
-                                    if (data.datasets && tooltipItem.datasetIndex < data.datasets.length && tooltipItem.parsed.x !== undefined) {
-                                        return `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.parsed.x.toFixed(2)} points`;
+                                label: function(tooltipItem) {
+                                    try {
+                                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw.toFixed(2)} points`;
+                                    } catch (error) {
+                                        console.error('Error formatting tooltip label:', error);
+                                        return '';
                                     }
-                                    return '';
                                 },
                                 footer: function(tooltipItems) {
-                                    // Safely display the VAR impact ratio
-                                    if (tooltipItems.length > 0 && tooltipItems[0].dataIndex < varImpactRatio.length) {
+                                    try {
                                         return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                    } catch (error) {
+                                        console.error('Error accessing tooltip footer:', error);
+                                        return '';
                                     }
-                                    return '';
                                 }
                             }
-                        },
-                        datalabels: {
-                            display: true,
-                            formatter: (value, ctx) => {
-                                return `Ratio: ${varImpactRatio[ctx.dataIndex].toFixed(2)}`;
-                            },
-                            color: '#444',
-                            anchor: 'end',
-                            align: 'end'
                         }
                     },
                     responsive: true,
@@ -238,9 +243,10 @@ function initializeTeamPerformanceChart(canvasId) {
             });
         })
         .catch(error => {
-            console.error('Error loading the data:', error);
+            console.error('Error initializing chart:', error);
         });
 }
+
 
 
 
