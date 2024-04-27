@@ -1,72 +1,78 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const chartCanvas = document.getElementById('foulsChart');
-    let chartInitialized = false; // Flag to ensure the chart is only initialized once
-  
-    // Intersection Observer to detect when the canvas comes into view
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        // Check if the canvas is in view and the chart hasn't been initialized
-        if (entry.isIntersecting && !chartInitialized) {
-          chartInitialized = true; // Set the flag so it doesn't initialize again
-          // Now fetch the data and initialize the chart
-          fetchAndInitializeChart();
-          observer.unobserve(chartCanvas); // Stop observing after initialization
-        }
-      });
-    }, {
-      threshold: 0.5 // Trigger when 50% of the canvas is visible
-    });
-  
-    // Start observing the canvas element
-    observer.observe(chartCanvas);
-  });
-  
-  function fetchAndInitializeChart() {
-    fetch('foul_data.json') // Make sure the path is correct
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
+    const observerOptions = {
+        threshold: 0.5 // Trigger when 50% of the canvas is visible
+    };
+
+    // Function to fetch data and initialize charts
+    function fetchDataAndInitializeCharts() {
+        fetch('foul_data.json')
+            .then(response => response.json())
+            .then(data => {
+                initializeChart(data, 'foulsChart', {
+                    label: 'Total Fouls Per Season',
+                    value: item => item.Total_Fouls,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                });
+
+                initializeChart(data, 'cardsChart', {
+                    label: 'Total Yellow Cards Per Season',
+                    value: item => item.Total_Home_Yellows + item.Total_Away_Yellows,
+                    borderColor: 'rgba(255, 215, 0, 1)',
+                    backgroundColor: 'rgba(255, 215, 0, 0.5)'
+                });
+
+                // Add additional initializeChart calls for more graphs as needed
+            })
+            .catch(error => {
+                console.error('Error loading the data:', error);
+                alert('Failed to load data: ' + error.message);
+            });
+    }
+
+    function initializeChart(data, canvasId, datasetOptions) {
         const seasons = data.map(item => item.Season);
-        const totalFouls = data.map(item => item.Total_Fouls);
-  
-        const ctx = document.getElementById('foulsChart').getContext('2d');
-        if (!ctx) {
-          throw new Error('Failed to get canvas context');
-        }
-        const foulsChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: seasons,
-            datasets: [{
-              label: 'Total Fouls Per Season',
-              data: totalFouls,
-              borderColor: 'rgb(255, 99, 132)',
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              fill: true,
-              tension: 0.1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
+        const chartValues = data.map(datasetOptions.value);
+
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: seasons,
+                datasets: [{
+                    label: datasetOptions.label,
+                    data: chartValues,
+                    borderColor: datasetOptions.borderColor,
+                    backgroundColor: datasetOptions.backgroundColor,
+                    fill: true,
+                    tension: 0.1
+                }]
             },
-            animation: {
-              duration: 2000 // Animation duration
-            },
-            responsive: true,
-            maintainAspectRatio: false
-          }
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 2000
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
         });
-      })
-      .catch(error => {
-        console.error('Error loading the data:', error);
-        alert('Failed to load data: ' + error.message);
-      });
-  }
-  
+    }
+
+    // Intersection Observer to detect when the canvas comes into view
+    let observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                fetchDataAndInitializeCharts();
+                observer.disconnect(); // Stop observing after initializing the charts
+            }
+        });
+    }, observerOptions);
+
+    observer.observe(document.getElementById('foulsChart')); // Observe the fouls chart
+    // If the charts are far apart, you might want to create separate observers for each chart
+});
