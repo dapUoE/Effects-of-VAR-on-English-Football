@@ -23,4 +23,22 @@ p {
     text-align: justify; /* For justified text; can use 'left', 'right', or 'center' */
     margin: 0 0 15px 0; /* Add space below paragraphs */
   }
+
+  /* Example styling */
+#content div {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    transition: transform 0.5s ease;
+}
+
+/* Animation when new content loads */
+@keyframes fadeIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.new-item {
+    animation: fadeIn 1s ease-out;
+}
   

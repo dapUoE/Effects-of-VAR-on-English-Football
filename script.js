@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const charts = {}; // Store chart instances for easy access
-    const observerOptions = {
-        threshold: 0.5 // Trigger when 50% of the canvas is visible
-    };
 
     // Function to fetch data and initialize charts
     function fetchDataAndInitializeCharts() {
@@ -102,15 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initialize observers for each chart
-    document.querySelectorAll('.chart').forEach(chart => {
-        new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !charts[entry.target.id]) {
-                    fetchDataAndInitializeCharts();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions).observe(chart);
-    });
+    // Immediately fetch data and initialize charts on DOM content loaded
+    fetchDataAndInitializeCharts();
 });
