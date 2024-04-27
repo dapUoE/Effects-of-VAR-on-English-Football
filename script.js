@@ -1,5 +1,29 @@
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('foul_data.json')  // Make sure the path is correct
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Trigger the chart initialization when the element comes into view
+                if (entry.target.id === 'graph1') {
+                    initializeChart(entry.target.querySelector('canvas').id);
+                }
+                entry.target.style.opacity = 1;
+                observer.unobserve(entry.target); // Stop observing once initialized
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+    });
+
+    // Add all graph containers to the observer
+    document.querySelectorAll('.graph-container').forEach(graph => {
+        observer.observe(graph);
+    });
+});
+
+function initializeChart(canvasId) {
+    fetch('foul_data.json')  // Adjust the path if needed
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -9,8 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             const seasons = data.map(item => item.Season);
             const totalFouls = data.map(item => item.Total_Fouls);
-
-            const ctx = document.getElementById('foulsChart').getContext('2d');
+            const ctx = document.getElementById(canvasId).getContext('2d');
             if (!ctx) {
                 throw new Error('Failed to get canvas context');
             }
@@ -34,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     },
                     animation: {
-                        duration: 2000 // Make sure the duration is reasonable
+                        duration: 2000
                     },
                     responsive: true,
                     maintainAspectRatio: false
@@ -44,25 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error loading the data:', error);
             alert('Failed to load data: ' + error.message);
-        }
-    );
-});
-
-document.addEventListener('scroll', () => {
-    // Check if the user scrolled to the bottom of the page
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        loadMoreContent();
-    }
-});
-
-function loadMoreContent() {
-    // Placeholder for loading more content
-    const content = document.getElementById('content');
-    const newDiv = document.createElement('div');
-    newDiv.innerHTML = 'More content loaded...';
-    newDiv.classList.add('new-item'); // Apply animation class
-    content.appendChild(newDiv);
+        });
 }
-
-
 
