@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'graph5':
                         initializeHomeAndAwayGoalsChart(entry.target.querySelector('canvas').id);
                         break;
+                    case 'graph6':
+                        initializeHomeAndAwayGoalsRatioChart(entry.target.querySelector('canvas').id);
+                        break;
                         
                     // Add cases for additional graphs as needed
                 }
@@ -144,6 +147,15 @@ function initializeHomeAndAwayGoalsChart(canvasId) {
         console.error('Error loading the data:', error);
         alert('Failed to load data: ' + error.message);
     });
+}
+
+function initializeHomeAndAwayGoalsRatioChart(canvasId) {
+    // Fetch data and initialize the home and away goals ratio chart
+    fetch('goal_data.json',canvasId, {
+        label: 'Home/Away Goals Ratio',
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)'
+    }, 'Goal_Diff');  // Pass the specific field name here
 }
 
 
