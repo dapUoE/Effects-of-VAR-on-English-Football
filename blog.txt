@@ -1,6 +1,6 @@
 This file provides the links to my blog page hosted on GitHub pages, and my GitHub repository, containing the data used for analysis, the jupyter notebook used to analyse the data, and the files used to build the blog post page. I go into details on how these work in the README file.
 
 Blog Link:
-https://dapuoe.github.io/Effects-of-VAR-on-English-Football/blog_post.html
+https://dapuoe.github.io/Effects-of-VAR-on-English-Football/Blog_Post_Site/blog_post.html
 
 GitHub https://github.com/dapUoE/Effects-of-VAR-on-English-FootballFootball:
