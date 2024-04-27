@@ -151,7 +151,7 @@ function initializeHomeAndAwayGoalsChart(canvasId) {
 
 function initializeHomeAndAwayGoalsRatioChart(canvasId) {
     // Fetch data and initialize the home and away goals ratio chart
-    fetch('goal_data.json',canvasId, {
+    fetchChartData('goal_data.json',canvasId, {
         label: 'Home/Away Goals Ratio',
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)'
