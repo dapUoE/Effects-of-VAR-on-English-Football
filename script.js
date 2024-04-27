@@ -15,11 +15,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     backgroundColor: 'rgba(255, 99, 132, 0.5)'
                 });
 
-                initializeChart(data, 'cardsChart', {
+                initializeChart(data, 'yellowCardsChart', {
                     label: 'Total Yellow Cards Per Season',
                     value: item => item.Total_Yellows,
                     borderColor: 'rgba(255, 215, 0, 1)',
                     backgroundColor: 'rgba(255, 215, 0, 0.5)'
+                });
+
+                initializeChart(data, 'redCardsChart', {
+                    label: 'Total Red Cards Per Season',
+                    value: item => item.Total_Reds,
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    backgroundColor: 'rgba(255, 0, 0, 0.5)'
                 });
 
                 // Add additional initializeChart calls for more graphs as needed
@@ -30,12 +37,16 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function initializeChart(data, canvasId, datasetOptions) {
+     // Function to initialize a single chart
+     function initializeChart(data, canvasId, datasetOptions) {
         const seasons = data.map(item => item.Season);
         const chartValues = data.map(datasetOptions.value);
 
         const ctx = document.getElementById(canvasId).getContext('2d');
-        new Chart(ctx, {
+        if (charts[canvasId]) {
+            charts[canvasId].destroy(); // Destroy any previous instance
+        }
+        charts[canvasId] = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: seasons,
@@ -48,31 +59,46 @@ document.addEventListener('DOMContentLoaded', function () {
                     tension: 0.1
                 }]
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                animation: {
-                    duration: 2000
-                },
-                responsive: true,
-                maintainAspectRatio: false
-            }
+            options: datasetOptions.options
         });
     }
 
-    // Intersection Observer to detect when the canvas comes into view
-    let observer = new IntersectionObserver((entries, observer) => {
+    // Intersection Observer callback function
+    const onIntersection = (entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                fetchDataAndInitializeCharts();
-                observer.disconnect(); // Stop observing after initializing the charts
+                const chartId = entry.target.id;
+                if (!charts[chartId]) {
+                    fetchDataAndInitializeCharts(); // Initialize charts if not done yet
+                } else {
+                    charts[chartId].update(); // Triggers reanimation
+                }
             }
         });
-    }, observerOptions);
+    };
 
-    observer.observe(document.getElementById('foulsChart')); // Observe the fouls chart
-    // If the charts are far apart, you might want to create separate observers for each chart
+    // Initialize observers for each chart
+    const observerOptions = {
+        threshold: 0.5 // Trigger when 50% of the canvas is visible
+    };
+    document.querySelectorAll('.chart').forEach(chart => {
+        new IntersectionObserver(onIntersection, observerOptions).observe(chart);
+    });
+
+    // Button toggle functionality
+    document.getElementById('toggleGraph').addEventListener('click', () => {
+        const foulsChartEl = document.getElementById('foulsChart');
+        const cardsChartEl = document.getElementById('cardsChart');
+
+        // Toggle which chart is displayed
+        if (currentChart === 'foulsChart') {
+            foulsChartEl.style.display = 'none';
+            cardsChartEl.style.display = 'block';
+            currentChart = 'cardsChart';
+        } else {
+            cardsChartEl.style.display = 'none';
+            foulsChartEl.style.display = 'block';
+            currentChart = 'foulsChart';
+        }
+    });
 });
