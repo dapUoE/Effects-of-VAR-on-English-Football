@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const chartCanvas = document.getElementById('foulsChart');
     let chartInitialized = false; // Flag to ensure the chart is only initialized once
   
-    // Intersection Observer to detect when the canvas comes into view
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         // Check if the canvas is in view and the chart hasn't been initialized
@@ -14,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }, {
+      rootMargin: '0px 0px -200px 0px', // Trigger when the canvas is further into view
       threshold: 0.5 // Trigger when 50% of the canvas is visible
     });
   
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   
   function fetchAndInitializeChart() {
-    fetch('foul_data.json') // Make sure the path is correct
+    fetch('foul_data.json')  // Make sure the path is correct
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!ctx) {
           throw new Error('Failed to get canvas context');
         }
-        const foulsChart = new Chart(ctx, {
+        new Chart(ctx, {
           type: 'line',
           data: {
             labels: seasons,
