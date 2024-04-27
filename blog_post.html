@@ -158,8 +158,20 @@
                 <p>In order to measure this we can calculate the number of points earned for each team, before and after the introduction of VAR. We can then divide that by the number of games played before and after VAR, to find the points per game, before and after VAR, for each team. I have excluded teams which have not participated in the EPL in both post and pre-VAR periods:</p>
             </section>
             <section id="graph7" class="graph-container">
-                <div style="width:80%; margin: 20px auto;">
+                <div style="width: 100%; height: 800px; margin: 20px auto;">
                     <canvas id="teamPointsChart"></canvas>
+                </div>                
+            </section>
+            <section>
+                <p>Each team has been assigned a number. This number corresponds to the ratio post-VAR points/pre-VAR points. This effectively measures how each team has performed since the introduction of VAR. The graph was ordered from best performers to worst performers. We can see our three most improved teams are Manchester City, Brighton, and Wolves, who all have a VAR impact ratio of over 1.25. On the other side of the graph, our worst three performers Watford, West Brom, and Norwich all have VAR impact ratios below or equal to 0.70, which indicate a severe fall-off in performance, and all four of the bottom teams are not in the current season of the EPL, which should be no surprise.</p>
+                <p>The worst drop-off in performance for a team currently in the EPL is interestingly from Chelsea. This should come as no surprise, with the club in turmoil following the forced sale of the club from Roman Abramovich to Todd Boehly and Co., which was a byproduct of the Russia-Ukraine war. This has caused much dissatisfaction from the Chelsea fans, as they have seen their club fall from consistent top three finishers, to mid table for the past two seasons. Manchester United, another huge club from the traditional “Big Six” is also not far behind. Both of these clubs have a VAR impact ratio of 0.81 and 0.84 respectively.</p>
+                <p>VAR may not have been responsible for this, but these teams have massive followings, and a drop-off in performance since VAR would not help fan sentiment towards VAR, in an already controversial environment. When these teams lose due to a close VAR call, the fallout lasts for days, even if the call was correct.</p>
+                <h2>VAR-ied Results…</h2>
+                <p>While it is in no doubt that VAR has been a massive change to the English Premier League, the statistics show varied perspectives. Overall, the introduction has led to higher volatility in most metrics, and I would attribute that more to the technology ‘finding its feet’, rather than the technology being unfair. I would say the initial controversy was fair, as VAR calls were inconsistent and naïve, but the technology has been refined and improved since then.</p>
+
+                
+
+
             </section>
 
 
@@ -177,6 +189,9 @@
     </footer>
         
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <script src="script.js"></script>
 
 

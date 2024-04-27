@@ -172,7 +172,7 @@ function initializeTeamPerformanceChart(canvasId) {
 
             const ctx = document.getElementById(canvasId).getContext('2d');
             const teamPerformanceChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'horizontalBar',  // Make the bar chart horizontal
                 data: {
                     labels: teamLabels,
                     datasets: [{
@@ -191,36 +191,32 @@ function initializeTeamPerformanceChart(canvasId) {
                 },
                 options: {
                     scales: {
-                        y: {
+                        x: {  // Use 'x' instead of 'y' because the chart is horizontal
                             beginAtZero: true
                         }
                     },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                footer: (tooltipItems) => {
-                                    return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
-                                }
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItems, data) {
+                                // Display the team name
+                                return data.labels[tooltipItems[0].index];
+                            },
+                            label: function(tooltipItem, data) {
+                                // Display the points value
+                                return data.datasets[tooltipItem.datasetIndex].label + ": " + tooltipItem.value + " points";
                             }
                         }
                     },
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: {
-                        onComplete: function() {
-                            var chartInstance = this.chart;
-                            var ctx = chartInstance.ctx;
-                            ctx.font = Chart.helpers.fontString(Chart.defaults.font.size, 'normal', Chart.defaults.font.family);
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
-
-                            this.data.datasets.forEach(function (dataset, i) {
-                                var meta = chartInstance.getDatasetMeta(i);
-                                meta.data.forEach(function (bar, index) {
-                                    var data = dataset.data[index];
-                                    ctx.fillText(data, bar.x, bar.y - 5);
-                                });
-                            });
+                    plugins: {
+                        datalabels: {
+                            align: 'end',
+                            anchor: 'end',
+                            formatter: function(value, context) {
+                                return varImpactRatio[context.dataIndex].toFixed(2);  // Format VAR impact ratio to 2 decimal places
+                            },
+                            color: '#444'
                         }
                     }
                 }
@@ -230,6 +226,7 @@ function initializeTeamPerformanceChart(canvasId) {
             console.error('Error loading the data:', error);
         });
 }
+
 
 
 
