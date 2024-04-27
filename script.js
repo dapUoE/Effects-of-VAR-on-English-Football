@@ -187,13 +187,13 @@ function initializeTeamPerformanceChart(canvasId) {
                 data: {
                     labels: teamLabels,
                     datasets: [{
-                        label: 'Pre-VAR',
+                        label: 'Pre-VAR Points Per Game',
                         data: pointsPreVAR,
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'blue',
                         borderWidth: 1
                     }, {
-                        label: 'Post-VAR',
+                        label: 'Post-VAR Points Per Game',
                         data: pointsPostVAR,
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         borderColor: 'red',
