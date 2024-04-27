@@ -1,14 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const charts = {}; // Store chart instances for easy access
     const observerOptions = {
         threshold: 0.5 // Trigger when 50% of the canvas is visible
     };
 
-    const charts = {}; // Store chart instances for easy access
-
     // Function to fetch data and initialize charts
     function fetchDataAndInitializeCharts() {
         fetch('foul_data.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 initializeChart(data, 'foulsChart', {
                     label: 'Total Fouls Per Season',
@@ -66,8 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         maintainAspectRatio: false
                     }
                 });
-
-                // Add additional initializeChart calls for more graphs as needed
             })
             .catch(error => {
                 console.error('Error loading the data:', error);
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to initialize a single chart
     function initializeChart(data, canvasId, datasetOptions) {
         const seasons = data.map(item => item.Season);
-        const chartValues = data.map(datasetOptions);
+        const chartValues = data.map(datasetOptions.value);
         const ctx = document.getElementById(canvasId).getContext('2d');
         if (charts[canvasId]) {
             charts[canvasId].destroy(); // Destroy any previous instance
@@ -99,44 +101,16 @@ document.addEventListener('DOMContentLoaded', function () {
             options: datasetOptions.options
         });
     }
-    
-    // Intersection Observer callback function
-    const onIntersection = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const chartId = entry.target.id;
-                if (!charts[chartId]) {
-                    fetchDataAndInitializeCharts(); // Initialize charts if not done yet
-                } else {
-                    charts[chartId].update(); // Triggers reanimation
-                }
-            }
-        });
-    };
-    
+
     // Initialize observers for each chart
     document.querySelectorAll('.chart').forEach(chart => {
-        new IntersectionObserver(onIntersection, observerOptions).observe(chart);
-    });
-    
-    // Button toggle functionality
-    document.getElementById('toggleGraph').addEventListener('click', () => {
-        const foulsChartEl = document.getElementById('foulsChart');
-        const yellowCardsChartEl = document.getElementById('yellowCardsChart');
-        const redCardsChartEl = document.getElementById('redCardsChart');
-    
-        // Toggle which chart is displayed
-        if (foulsChartEl.style.display !== 'none') {
-            foulsChartEl.style.display = 'none';
-            yellowCardsChartEl.style.display = 'block';
-            redCardsChartEl.style.display = 'none';
-        } else if (yellowCardsChartEl.style.display !== 'none') {
-            yellowCardsChartEl.style.display = 'none';
-            redCardsChartEl.style.display = 'block';
-        } else {
-            redCardsChartEl.style.display = 'none';
-            foulsChartEl.style.display = 'block';
-        }
+        new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !charts[entry.target.id]) {
+                    fetchDataAndInitializeCharts();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions).observe(chart);
     });
 });
-    
