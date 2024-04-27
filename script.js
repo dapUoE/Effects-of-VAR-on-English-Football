@@ -172,7 +172,7 @@ function initializeTeamPerformanceChart(canvasId) {
 
             const ctx = document.getElementById(canvasId).getContext('2d');
             const teamPerformanceChart = new Chart(ctx, {
-                type: 'horizontalBar',  // Make the bar chart horizontal
+                type: 'bar',  // Use 'bar' type for horizontal bars in Chart.js v3+
                 data: {
                     labels: teamLabels,
                     datasets: [{
@@ -190,35 +190,43 @@ function initializeTeamPerformanceChart(canvasId) {
                     }]
                 },
                 options: {
+                    indexAxis: 'y', // This makes the bar chart horizontal
                     scales: {
-                        x: {  // Use 'x' instead of 'y' because the chart is horizontal
+                        x: {  // Now x is the value axis
                             beginAtZero: true
                         }
                     },
-                    tooltips: {
-                        callbacks: {
-                            title: function(tooltipItems, data) {
-                                // Display the team name
-                                return data.labels[tooltipItems[0].index];
-                            },
-                            label: function(tooltipItem, data) {
-                                // Display the points value
-                                return data.datasets[tooltipItem.datasetIndex].label + ": " + tooltipItem.value + " points";
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems, data) {
+                                    // Display the team name
+                                    return data.labels[tooltipItems[0].dataIndex];
+                                },
+                                label: function(tooltipItem, data) {
+                                    // Display the points value
+                                    return data.datasets[tooltipItem.datasetIndex].label + ": " + tooltipItem.parsed.x + " points";
+                                },
+                                footer: function(tooltipItems) {
+                                    // Show VAR impact ratio in the footer of the tooltip
+                                    return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true
+                        },
+                        datalabels: {
+                            display: true,
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: (value, ctx) => {
+                                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value.toFixed(2);
                             }
                         }
                     },
                     responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        datalabels: {
-                            align: 'end',
-                            anchor: 'end',
-                            formatter: function(value, context) {
-                                return varImpactRatio[context.dataIndex].toFixed(2);  // Format VAR impact ratio to 2 decimal places
-                            },
-                            color: '#444'
-                        }
-                    }
+                    maintainAspectRatio: false
                 }
             });
         })
@@ -226,6 +234,7 @@ function initializeTeamPerformanceChart(canvasId) {
             console.error('Error loading the data:', error);
         });
 }
+
 
 
 
