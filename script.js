@@ -172,6 +172,10 @@ function initializeTeamPerformanceChart(canvasId) {
             const pointsPreVAR = data.map(item => item.Points_Per_Game_Pre_VAR);
             const pointsPostVAR = data.map(item => item.Points_Per_Game_Post_VAR);
             const varImpactRatio = data.map(item => item.VAR_Impact_Ratio);
+            console.log('Data for chart:', {
+                teamLabels, pointsPreVAR, pointsPostVAR, varImpactRatio
+            });
+            
 
             const ctx = document.getElementById(canvasId).getContext('2d');
             const teamPerformanceChart = new Chart(ctx, {
@@ -202,10 +206,23 @@ function initializeTeamPerformanceChart(canvasId) {
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                title: (tooltipItems) => tooltipItems[0] ? data.labels[tooltipItems[0].dataIndex] : '',
-                                label: (tooltipItem) => `${tooltipItem.dataset.label}: ${tooltipItem.raw} points`
+                                title: function(tooltipItems, data) {
+                                    // Safe access using optional chaining
+                                    let index = tooltipItems[0]?.dataIndex;
+                                    return index !== undefined && data.labels[index] ? data.labels[index] : '';
+                                },
+                                label: function(tooltipItem, data) {
+                                    let label = data.datasets[tooltipItem.datasetIndex]?.label;
+                                    let value = tooltipItem.parsed.x;
+                                    return label && value !== undefined ? `${label}: ${value} points` : '';
+                                },
+                                footer: function(tooltipItems, data) {
+                                    let index = tooltipItems[0]?.dataIndex;
+                                    return index !== undefined && data.labels[index] ? `VAR Impact Ratio: ${varImpactRatio[index].toFixed(2)}` : '';
+                                }
                             }
                         },
+
                         datalabels: {
                             display: (context) => context.datasetIndex === 1,  // Display only for "Post-VAR" dataset
                             formatter: (value, context) => `Ratio: ${varImpactRatio[context.dataIndex].toFixed(2)}`,
