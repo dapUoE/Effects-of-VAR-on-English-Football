@@ -23,7 +23,23 @@ VAR_Analysis.ipynb
 
 This file is where the bulk of the analysis takes place. You can see a lot of data analysis and graphs, some of which were not picked for the blog post, as I decided to only write about the most interesting findings.
 
-In order to use this file for yourself, you must edit the PATH at the top of the file
+In order to use this file for yourself, you must clone the github repository on your local machine, and change the path to point to the data folder included in the GitHub repository. This is indicated quite clearly in the jupyter file itself.
+
+The rest of the file will run off of that, provided that all of the files remain unchanged and in the same directories.
+---------------------
+Blog_Post_Site
+-blog_post.html
+-script.js
+-styles.css
+-foul_data.json
+-goal_data.json
+-team_data.json
+
+This directory contains all of the code for the blog post website. blog_post.html, script.js, and styles.css contain all of the html, javascript, and css styles respectively.
+
+the .json files are used to contruct the interactive graphs on the blog website, and they have been made up of the data analysis in VAR_Analysis.ipynb in the parent directory. None of these files need to be edited as GitHub has taken care of the hosting of the website, and the link to it is provided in blog.txt in the parent directory.
+
+
 
 
 
