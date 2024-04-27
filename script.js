@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'graph6':
                         initializeHomeAndAwayGoalsRatioChart(entry.target.querySelector('canvas').id);
                         break;
+                    case 'graph7':
+                        initializeTeamPerformanceChart(entry.target.querySelector('canvas').id);
+                        break;
                         
                     // Add cases for additional graphs as needed
                 }
