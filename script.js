@@ -163,19 +163,12 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
 
 function initializeTeamPerformanceChart(canvasId) {
     fetch('team_data.json')
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             const teamLabels = data.map(item => item.Team);
             const pointsPreVAR = data.map(item => item.Points_Per_Game_Pre_VAR);
             const pointsPostVAR = data.map(item => item.Points_Per_Game_Post_VAR);
             const varImpactRatio = data.map(item => item.VAR_Impact_Ratio);
-            console.log('Data for chart:', {
-                teamLabels, pointsPreVAR, pointsPostVAR, varImpactRatio
-            });
-            
 
             const ctx = document.getElementById(canvasId).getContext('2d');
             const teamPerformanceChart = new Chart(ctx, {
@@ -207,25 +200,33 @@ function initializeTeamPerformanceChart(canvasId) {
                         tooltip: {
                             callbacks: {
                                 title: function(tooltipItems, data) {
-                                    // Safe access using optional chaining
-                                    let index = tooltipItems[0]?.dataIndex;
-                                    return index !== undefined && data.labels[index] ? data.labels[index] : '';
+                                    // Check the existence of tooltipItems[0] and data.labels safely
+                                    if (tooltipItems.length > 0 && data.labels && tooltipItems[0].dataIndex < data.labels.length) {
+                                        return data.labels[tooltipItems[0].dataIndex];
+                                    }
+                                    return '';
                                 },
                                 label: function(tooltipItem, data) {
-                                    let label = data.datasets[tooltipItem.datasetIndex]?.label;
-                                    let value = tooltipItem.parsed.x;
-                                    return label && value !== undefined ? `${label}: ${value} points` : '';
+                                    // Ensure safe access to datasets and parsed values
+                                    if (data.datasets && tooltipItem.datasetIndex < data.datasets.length && tooltipItem.parsed.x !== undefined) {
+                                        return `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.parsed.x.toFixed(2)} points`;
+                                    }
+                                    return '';
                                 },
-                                footer: function(tooltipItems, data) {
-                                    let index = tooltipItems[0]?.dataIndex;
-                                    return index !== undefined && data.labels[index] ? `VAR Impact Ratio: ${varImpactRatio[index].toFixed(2)}` : '';
+                                footer: function(tooltipItems) {
+                                    // Safely display the VAR impact ratio
+                                    if (tooltipItems.length > 0 && tooltipItems[0].dataIndex < varImpactRatio.length) {
+                                        return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                    }
+                                    return '';
                                 }
                             }
                         },
-
                         datalabels: {
-                            display: (context) => context.datasetIndex === 1,  // Display only for "Post-VAR" dataset
-                            formatter: (value, context) => `Ratio: ${varImpactRatio[context.dataIndex].toFixed(2)}`,
+                            display: true,
+                            formatter: (value, ctx) => {
+                                return `Ratio: ${varImpactRatio[ctx.dataIndex].toFixed(2)}`;
+                            },
                             color: '#444',
                             anchor: 'end',
                             align: 'end'
