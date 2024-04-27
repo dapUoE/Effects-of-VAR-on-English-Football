@@ -212,16 +212,32 @@ function initializeTeamPerformanceChart(canvasId) {
                         tooltip: {
                             callbacks: {
                                 title: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems[0].dataIndex];
+                                    // Safely access the first item, check if it exists
+                                    if (tooltipItems.length > 0 && data.labels) {
+                                        return data.labels[tooltipItems[0].dataIndex];
+                                    }
+                                    return '';
                                 },
                                 label: function(tooltipItem, data) {
-                                    return data.datasets[tooltipItem.datasetIndex].label + ": " + tooltipItem.parsed.x + " points";
+                                    // Ensure safe access to the datasets and parsed values
+                                    if (data.datasets && tooltipItem.datasetIndex < data.datasets.length) {
+                                        const dataset = data.datasets[tooltipItem.datasetIndex];
+                                        if (dataset && 'parsed' in tooltipItem && tooltipItem.parsed.x !== undefined) {
+                                            return `${dataset.label}: ${tooltipItem.parsed.x} points`;
+                                        }
+                                    }
+                                    return '';
                                 },
                                 footer: function(tooltipItems) {
-                                    return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                    // Ensure the VAR impact ratio array exists and has the same length as labels
+                                    if (tooltipItems.length > 0 && varImpactRatio && tooltipItems[0].dataIndex < varImpactRatio.length) {
+                                        return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                    }
+                                    return '';
                                 }
                             }
                         },
+                        
                         legend: {
                             display: true
                         }
