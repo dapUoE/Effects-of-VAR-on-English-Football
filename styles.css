@@ -19,6 +19,10 @@ article {
     article {
         margin: 0 20%;
     }
+
+    header, footer {
+        margin: 0 20%;
+    }
 }
 
 p {
