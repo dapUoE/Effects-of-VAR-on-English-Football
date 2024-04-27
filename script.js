@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'graph4':
                         initializeGoalsChart(entry.target.querySelector('canvas').id);
                         break;
+                    case 'graph5':
+                        initializeHomeAndAwayGoalsChart(entry.target.querySelector('canvas').id);
+                        break;
+                        
                     // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
@@ -86,6 +90,63 @@ function initializeGoalsChart(canvasId) {
         backgroundColor: 'rgba(54, 162, 235, 0.5)'
     }, 'Total_Goals');  // Pass the specific field name here
 }
+
+function initializeHomeAndAwayGoalsChart(canvasId) {
+    fetch('goals_data.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const seasons = data.map(item => item.Season);
+        const homeGoals = data.map(item => item.Total_Home_Goals);
+        const awayGoals = data.map(item => item.Total_Away_Goals);
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const homeAwayGoalsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: seasons,
+                datasets: [{
+                    label: 'Home Goals',
+                    data: homeGoals,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    fill: false,
+                    lineTension: 0.1
+                }, {
+                    label: 'Away Goals',
+                    data: awayGoals,
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    fill: false,
+                    lineTension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        grace: '5%',
+                        position: 'left'
+                    }
+                },
+                animation: {
+                    duration: 2000
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error loading the data:', error);
+        alert('Failed to load data: ' + error.message);
+    });
+}
+
+
 
 function fetchChartData(url, canvasId, chartConfig, dataField) {
     fetch(url)
