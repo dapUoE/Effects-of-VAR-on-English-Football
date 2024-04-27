@@ -12,7 +12,15 @@ header, footer {
 }
 
 article {
-    padding: 20px;
+    width: 100%; /* Optional: ensures it takes full width on smaller screens */
+    padding: 20px; /* Keeps content from touching the edges */
+}
+
+@media (min-width: 768px) {
+    article {
+        width: 70%; /* Adjust to your preference */
+        margin: 0 auto; /* Centers the content */
+    }
 }
 
 p {
@@ -39,13 +47,3 @@ p {
 }
 
 
-.switch-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}

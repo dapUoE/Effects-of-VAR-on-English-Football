@@ -123,16 +123,3 @@ function fetchChartData(url, canvasId, chartConfig, dataField) {
         });
 }
 
-document.getElementById('toggleGraph').addEventListener('click', function() {
-    var yellowGraph = document.getElementById('graph2');
-    var redGraph = document.getElementById('graph3');
-    
-    // Check which graph is currently visible and toggle
-    if (yellowGraph.style.display === 'none') {
-        yellowGraph.style.display = 'block';
-        redGraph.style.display = 'none';
-    } else {
-        yellowGraph.style.display = 'none';
-        redGraph.style.display = 'block';
-    }
-});
