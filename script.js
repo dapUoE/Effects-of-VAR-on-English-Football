@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 initializeChart(data, 'cardsChart', {
                     label: 'Total Yellow Cards Per Season',
-                    value: item => item.Total_Home_Yellows + item.Total_Away_Yellows,
+                    value: item => item.Total_Yellows,
                     borderColor: 'rgba(255, 215, 0, 1)',
                     backgroundColor: 'rgba(255, 215, 0, 0.5)'
                 });
