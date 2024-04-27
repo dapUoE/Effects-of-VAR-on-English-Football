@@ -29,7 +29,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.graph-container').forEach(graph => {
         observer.observe(graph);
     });
+
+    // Call the function to adjust graph dimensions
+    adjustGraphDimensions();
+
+    // Ensure dimensions are recalibrated on window resize
+    window.addEventListener('resize', adjustGraphDimensions);
 });
+
+function adjustGraphDimensions() {
+    // Adjust the height of each graph to match its width
+    const graphs = document.querySelectorAll('.graph-container canvas');
+    graphs.forEach(function(canvas) {
+        const width = canvas.offsetWidth; // Get the actual width of the canvas
+        canvas.style.height = width + 'px'; // Set the height equal to the width
+    });
+}
 
 function initializeFoulsChart(canvasId) {
     // Fetch data and initialize the fouls chart
@@ -44,8 +59,9 @@ function initializeYellowCardsChart(canvasId) {
     // Fetch data and initialize the cards chart
     fetchChartData('foul_data.json', canvasId, {
         label: 'Yellow Cards Per Season',
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+        // Yellow card color
+        borderColor: 'rgb(255, 205, 86)',
+        backgroundColor: 'rgba(255, 205, 86, 0.5)'
     }, 'Total_Yellows');  // Pass the specific field name here
 }
 
@@ -53,8 +69,9 @@ function initializeRedCardsChart(canvasId) {
     // Fetch data and initialize the red cards chart
     fetchChartData('foul_data.json', canvasId, {
         label: 'Red Cards Per Season',
-        borderColor: 'rgb(255, 205, 86)',
-        backgroundColor: 'rgba(255, 205, 86, 0.5)'
+        // Red card color
+        borderColor: 'rgb(255, 99, 71)',
+        backgroundColor: 'rgba(255, 99, 71, 0.5)'
     }, 'Total_Reds');  // Pass the specific field name here
 }
 
