@@ -68,7 +68,7 @@ function fetchChartData(url, canvasId, chartConfig, dataField) {
         })
         .then(data => {
             const seasons = data.map(item => item.Season);
-            const values = data.map(item => item[dataField]); // Use dynamic field name
+            const values = data.map(item => item[dataField]);
             const ctx = document.getElementById(canvasId).getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'line',
@@ -86,7 +86,10 @@ function fetchChartData(url, canvasId, chartConfig, dataField) {
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            // Remove 'beginAtZero' to allow dynamic range adjustment
+                            type: 'linear', // Ensures linear scaling
+                            grace: '5%',  // Adds a little grace to top and bottom of scale, adjust as needed
+                            position: 'left',
                         }
                     },
                     animation: {
@@ -102,3 +105,4 @@ function fetchChartData(url, canvasId, chartConfig, dataField) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
