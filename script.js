@@ -2,9 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Trigger the chart initialization when the element comes into view
-                if (entry.target.id === 'graph1') {
-                    initializeChart(entry.target.querySelector('canvas').id);
+                // Determine which chart to initialize based on the container ID
+                switch(entry.target.id) {
+                    case 'graph1':
+                        initializeFoulsChart(entry.target.querySelector('canvas').id);
+                        break;
+                    case 'graph2':
+                        initializeYellowCardsChart(entry.target.querySelector('canvas').id);
+                        break;
+                    case 'graph3':
+                        initializeRedCardsChart(entry.target.querySelector('canvas').id);
+                        break;
+                    // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
                 observer.unobserve(entry.target); // Stop observing once initialized
@@ -16,14 +25,41 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.5
     });
 
-    // Add all graph containers to the observer
+    // Observe all graph containers
     document.querySelectorAll('.graph-container').forEach(graph => {
         observer.observe(graph);
     });
 });
 
-function initializeChart(canvasId) {
-    fetch('foul_data.json')  // Adjust the path if needed
+function initializeFoulsChart(canvasId) {
+    // Fetch data and initialize the fouls chart
+    fetchChartData('foul_data.json', canvasId, {
+        label: 'Total Fouls Per Season',
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+    }, 'Total_Fouls');  // Pass the specific field name here
+}
+
+function initializeCardsChart(canvasId) {
+    // Fetch data and initialize the cards chart
+    fetchChartData('card_data.json', canvasId, {
+        label: 'Yellow Cards Per Season',
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+    }, 'Total_Yellow_Cards');  // Pass the specific field name here
+}
+
+function initializeRedCardsChart(canvasId) {
+    // Fetch data and initialize the red cards chart
+    fetchChartData('card_data.json', canvasId, {
+        label: 'Red Cards Per Season',
+        borderColor: 'rgb(255, 205, 86)',
+        backgroundColor: 'rgba(255, 205, 86, 0.5)'
+    }, 'Total_Red_Cards');  // Pass the specific field name here
+}
+
+function fetchChartData(url, canvasId, chartConfig, dataField) {
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -32,20 +68,17 @@ function initializeChart(canvasId) {
         })
         .then(data => {
             const seasons = data.map(item => item.Season);
-            const totalFouls = data.map(item => item.Total_Fouls);
+            const values = data.map(item => item[dataField]); // Use dynamic field name
             const ctx = document.getElementById(canvasId).getContext('2d');
-            if (!ctx) {
-                throw new Error('Failed to get canvas context');
-            }
-            const foulsChart = new Chart(ctx, {
+            const chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: seasons,
                     datasets: [{
-                        label: 'Total Fouls Per Season',
-                        data: totalFouls,
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        label: chartConfig.label,
+                        data: values,
+                        borderColor: chartConfig.borderColor,
+                        backgroundColor: chartConfig.backgroundColor,
                         fill: true,
                         tension: 0.1
                     }]
@@ -69,4 +102,3 @@ function initializeChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
-
