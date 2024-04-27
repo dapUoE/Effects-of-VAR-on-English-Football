@@ -23,29 +23,3 @@ p {
     text-align: justify; /* For justified text; can use 'left', 'right', or 'center' */
     margin: 0 0 15px 0; /* Add space below paragraphs */
   }
-
-  .graph-container {
-    width: 80%; /* or any other relative/absolute width */
-    margin: 20px auto;
-    position: relative; /* Needed to position the canvas correctly */
-}
-
-.graph-container canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-}
-
-
-.switch-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
