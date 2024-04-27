@@ -1,48 +1,37 @@
-// script.js
 document.addEventListener('DOMContentLoaded', function () {
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.dataset.initialized) {
-                entry.target.dataset.initialized = true; // Mark as initialized
-                let canvas = entry.target.querySelector('canvas');
-                if (canvas) {
-                    initGraph(canvas, canvas.id);
-                }
-            }
-        });
-    }, { threshold: 0.5 });
-
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
-    });
-});
-
-function initGraph(canvas, id) {
-    fetch(`${id}.json`) // Assuming you have separate JSON files for each graph
+    fetch('foul_data.json')
         .then(response => response.json())
         .then(data => {
-            new Chart(canvas, {
-                type: data.type,
+            const seasons = data.map(item => item.Season);
+            const totalFouls = data.map(item => item.Total_Fouls);
+
+            const ctx = document.getElementById('foulsChart').getContext('2d');
+            const foulsChart = new Chart(ctx, {
+                type: 'line', // Line chart to show progression over seasons
                 data: {
-                    labels: data.labels,
-                    datasets: data.datasets
+                    labels: seasons,
+                    datasets: [{
+                        label: 'Total Fouls Per Season',
+                        data: totalFouls,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }]
                 },
                 options: {
-                    animations: {
-                        tension: {
-                            duration: 1000,
-                            easing: 'linear',
-                            from: 1,
-                            to: 0,
-                            loop: true
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true
                         }
-                    }
+                    },
+                    animation: {
+                        duration: 2000 // Animation can be adjusted as needed
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
             });
-        });
-}
+        })
+        .catch(error => console.error('Error loading the data:', error));
+});
