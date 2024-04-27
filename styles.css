@@ -14,3 +14,13 @@ header, footer {
 article {
     padding: 20px;
 }
+
+p {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px; /* Choose your font size */
+    line-height: 1.6; /* Adjust line height for readability */
+    color: #333; /* Set the text color */
+    text-align: justify; /* For justified text; can use 'left', 'right', or 'center' */
+    margin: 0 0 15px 0; /* Add space below paragraphs */
+  }
+  
