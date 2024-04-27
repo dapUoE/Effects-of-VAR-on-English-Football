@@ -78,4 +78,65 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to initialize a single chart
     function initializeChart(data, canvasId, datasetOptions) {
         const seasons = data.map(item => item.Season);
-        const chartValues = data.map(datasetOptions
+        const chartValues = data.map(datasetOptions);
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        if (charts[canvasId]) {
+            charts[canvasId].destroy(); // Destroy any previous instance
+        }
+        charts[canvasId] = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: seasons,
+                datasets: [{
+                    label: datasetOptions.label,
+                    data: chartValues,
+                    borderColor: datasetOptions.borderColor,
+                    backgroundColor: datasetOptions.backgroundColor,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: datasetOptions.options
+        });
+    }
+    
+    // Intersection Observer callback function
+    const onIntersection = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const chartId = entry.target.id;
+                if (!charts[chartId]) {
+                    fetchDataAndInitializeCharts(); // Initialize charts if not done yet
+                } else {
+                    charts[chartId].update(); // Triggers reanimation
+                }
+            }
+        });
+    };
+    
+    // Initialize observers for each chart
+    document.querySelectorAll('.chart').forEach(chart => {
+        new IntersectionObserver(onIntersection, observerOptions).observe(chart);
+    });
+    
+    // Button toggle functionality
+    document.getElementById('toggleGraph').addEventListener('click', () => {
+        const foulsChartEl = document.getElementById('foulsChart');
+        const yellowCardsChartEl = document.getElementById('yellowCardsChart');
+        const redCardsChartEl = document.getElementById('redCardsChart');
+    
+        // Toggle which chart is displayed
+        if (foulsChartEl.style.display !== 'none') {
+            foulsChartEl.style.display = 'none';
+            yellowCardsChartEl.style.display = 'block';
+            redCardsChartEl.style.display = 'none';
+        } else if (yellowCardsChartEl.style.display !== 'none') {
+            yellowCardsChartEl.style.display = 'none';
+            redCardsChartEl.style.display = 'block';
+        } else {
+            redCardsChartEl.style.display = 'none';
+            foulsChartEl.style.display = 'block';
+        }
+    });
+});
+    
