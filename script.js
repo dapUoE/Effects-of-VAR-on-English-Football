@@ -158,6 +158,77 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
     }, 'Goal_Diff');  // Pass the specific field name here
 }
 
+function initializeTeamPerformanceChart(canvasId) {
+    fetch('team_data.json')
+        .then(response => response.json())
+        .then(data => {
+            const teamLabels = data.map(item => item.Team);
+            const pointsPreVAR = data.map(item => item.Points_Per_Game_Pre_VAR);
+            const pointsPostVAR = data.map(item => item.Points_Per_Game_Post_VAR);
+            const varImpactRatio = data.map(item => item.VAR_Impact_Ratio);
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const teamPerformanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: teamLabels,
+                    datasets: [{
+                        label: 'Pre-VAR',
+                        data: pointsPreVAR,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'blue',
+                        borderWidth: 1
+                    }, {
+                        label: 'Post-VAR',
+                        data: pointsPostVAR,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'red',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                footer: (tooltipItems) => {
+                                    return `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        onComplete: function() {
+                            var chartInstance = this.chart;
+                            var ctx = chartInstance.ctx;
+                            ctx.font = Chart.helpers.fontString(Chart.defaults.font.size, 'normal', Chart.defaults.font.family);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            this.data.datasets.forEach(function (dataset, i) {
+                                var meta = chartInstance.getDatasetMeta(i);
+                                meta.data.forEach(function (bar, index) {
+                                    var data = dataset.data[index];
+                                    ctx.fillText(data, bar.x, bar.y - 5);
+                                });
+                            });
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading the data:', error);
+        });
+}
+
+
 
 
 function fetchChartData(url, canvasId, chartConfig, dataField) {
