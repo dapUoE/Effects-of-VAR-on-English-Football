@@ -46,7 +46,7 @@ function initializeYellowCardsChart(canvasId) {
         label: 'Yellow Cards Per Season',
         borderColor: 'rgb(54, 162, 235)',
         backgroundColor: 'rgba(54, 162, 235, 0.5)'
-    }, 'Total_Yellow_Cards');  // Pass the specific field name here
+    }, 'Total_Yellows');  // Pass the specific field name here
 }
 
 function initializeRedCardsChart(canvasId) {
@@ -55,7 +55,7 @@ function initializeRedCardsChart(canvasId) {
         label: 'Red Cards Per Season',
         borderColor: 'rgb(255, 205, 86)',
         backgroundColor: 'rgba(255, 205, 86, 0.5)'
-    }, 'Total_Red_Cards');  // Pass the specific field name here
+    }, 'Total_Reds');  // Pass the specific field name here
 }
 
 function fetchChartData(url, canvasId, chartConfig, dataField) {
