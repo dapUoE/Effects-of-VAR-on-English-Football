@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const observerOptions = {
-        threshold: 0.5 // Trigger when 50% of the canvas is visible
-    };
+    let currentChart = 'foulsChart';
+    const charts = {}; // Store chart instances for easy access
 
     // Function to fetch data and initialize charts
     function fetchDataAndInitializeCharts() {
