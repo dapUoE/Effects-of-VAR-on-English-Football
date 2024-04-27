@@ -163,7 +163,10 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
 
 function initializeTeamPerformanceChart(canvasId) {
     fetch('team_data.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
         .then(data => {
             const teamLabels = data.map(item => item.Team);
             const pointsPreVAR = data.map(item => item.Points_Per_Game_Pre_VAR);
@@ -190,44 +193,25 @@ function initializeTeamPerformanceChart(canvasId) {
                     }]
                 },
                 options: {
-                    indexAxis: 'y',  // Makes the bar chart horizontal
+                    indexAxis: 'y',
                     scales: {
-                        x: {  // X-axis will now be the value axis
+                        x: {
                             beginAtZero: true
                         }
                     },
                     plugins: {
-                        datalabels: {
-                            align: 'end',
-                            anchor: 'end',
-                            formatter: function(value, context) {
-                                return context.datasetIndex === 1 ? varImpactRatio[context.dataIndex].toFixed(2) : '';
-                            },
-                            color: '#444',
-                            font: {
-                                weight: 'bold'
-                            }
-                        },
                         tooltip: {
                             callbacks: {
-                                title: function(tooltipItems, data) {
-                                    // Check for data existence safely
-                                    return tooltipItems.length > 0 && tooltipItems[0].dataIndex < data.labels.length ? data.labels[tooltipItems[0].dataIndex] : '';
-                                },
-                                label: function(tooltipItem, data) {
-                                    // Ensure safe access to the datasets and parsed values
-                                    return tooltipItem.datasetIndex < data.datasets.length && 'parsed' in tooltipItem && tooltipItem.parsed.x !== undefined ?
-                                        `${data.datasets[tooltipItem.datasetIndex].label}: ${tooltipItem.parsed.x} points` : '';
-                                },
-                                footer: function(tooltipItems, data) {
-                                    // Ensure the VAR impact ratio array exists and matches the data length
-                                    return tooltipItems.length > 0 && tooltipItems[0].dataIndex < varImpactRatio.length ?
-                                        `VAR Impact Ratio: ${varImpactRatio[tooltipItems[0].dataIndex].toFixed(2)}` : '';
-                                }
+                                title: (tooltipItems) => tooltipItems[0] ? data.labels[tooltipItems[0].dataIndex] : '',
+                                label: (tooltipItem) => `${tooltipItem.dataset.label}: ${tooltipItem.raw} points`
                             }
                         },
-                        legend: {
-                            display: true
+                        datalabels: {
+                            display: (context) => context.datasetIndex === 1,  // Display only for "Post-VAR" dataset
+                            formatter: (value, context) => `Ratio: ${varImpactRatio[context.dataIndex].toFixed(2)}`,
+                            color: '#444',
+                            anchor: 'end',
+                            align: 'end'
                         }
                     },
                     responsive: true,
@@ -239,6 +223,7 @@ function initializeTeamPerformanceChart(canvasId) {
             console.error('Error loading the data:', error);
         });
 }
+
 
 
 
