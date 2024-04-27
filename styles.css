@@ -1,0 +1,16 @@
+/* styles.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+header, footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f3f3f3;
+}
+
+article {
+    padding: 20px;
+}
