@@ -40,7 +40,7 @@ function initializeFoulsChart(canvasId) {
     }, 'Total_Fouls');  // Pass the specific field name here
 }
 
-function initializeCardsChart(canvasId) {
+function initializeYellowCardsChart(canvasId) {
     // Fetch data and initialize the cards chart
     fetchChartData('card_data.json', canvasId, {
         label: 'Yellow Cards Per Season',
