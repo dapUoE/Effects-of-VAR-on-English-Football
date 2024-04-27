@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'graph3':
                         initializeRedCardsChart(entry.target.querySelector('canvas').id);
                         break;
+                    case 'graph4':
+                        initializeGoalsChart(entry.target.querySelector('canvas').id);
+                        break;
                     // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
@@ -73,6 +76,15 @@ function initializeRedCardsChart(canvasId) {
         borderColor: 'rgb(255, 99, 71)',
         backgroundColor: 'rgba(255, 99, 71, 0.5)'
     }, 'Total_Reds');  // Pass the specific field name here
+}
+
+function initializeGoalsChart(canvasId) {
+    // Fetch data and initialize the goals chart
+    fetchChartData('goal_data.json', canvasId, {
+        label: 'Goals Per Season',
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+    }, 'Total_Goals');  // Pass the specific field name here
 }
 
 function fetchChartData(url, canvasId, chartConfig, dataField) {
