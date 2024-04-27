@@ -29,3 +29,17 @@ p {
     text-align: justify; /* For justified text; can use 'left', 'right', or 'center' */
     margin: 0 0 15px 0; /* Add space below paragraphs */
   }
+
+  table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}

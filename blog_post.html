@@ -100,6 +100,71 @@
                 <div style="width:80%; margin: 20px auto;">
                     <canvas id="homeAwayGoalsDifferenceChart"></canvas>
                 </div>
+            </section>
+            <section>
+                <p>It seems that since the introduction of VAR, the EPL has had much fairer games, with away sides being able to score more goals than before. However I would like to point out that the dip seen between 2019/2020 and 2021/2022 was probably due to the COVID-19 pandemic, which saw teams play behind closed doors in empty stadiums. Therefore, I think this is more of a comment on how much of an advantage home support gives to a team, than how VAR has affected the league. You can see that with the return of fans since that point, the goal difference seems to be widening once again.</p>
+                <p>So in order to see a more novel method of measuring the impact of VAR on goals scored, we can use the causal forests method to estimate the extra amount of goals scored since its introduction to the EPL. To do this we must pick our variables.</p>
+                <p>The treatment variable was ‘VAR’. We can mark each match with a value; ‘1’ for a game which used VAR, and ‘0’ for a game which did not use VAR. Our outcome variable is ‘TotalGoals’ which is a variable used to calculate the amount of goals scored in each match. Finally, we can use a bunch of covariates as the variables we will train out model on, allowing it to find patterns in the data.</p>
+                <p>We used these variables as these were the only variables with no missing data from the dataset used, in order to make the testing as fair as possible. Below is the Conditional Average Treatment Effect (CATE) of VAR on goals scored. I have taken a mean of multiple CATE results, as there can be some variation:</p>
+            </section>
+            <section>
+                <table>
+                    <tr>
+                        <th>Statistic</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Number of Valid Data Points</td>
+                        <td>50</td>
+                    </tr>
+                    <tr>
+                        <td>Mean Value</td>
+                        <td>0.1836</td>
+                    </tr>
+                    <tr>
+                        <td>Standard Deviation</td>
+                        <td>0.0416</td>
+                    </tr>
+                    <tr>
+                        <td>95% Confidence Interval</td>
+                        <td>(0.1721, 0.1952)</td>
+                    </tr>
+                    <tr>
+                        <td>Min/Max CATE</td>
+                        <td>0.1007 / 0.2893</td>
+                    </tr>
+                    <tr>
+                        <td>Percentiles (25%, 50%, 75%)</td>
+                        <td>0.1475, 0.1834, 0.2155</td>
+                    </tr>
+                    <tr>
+                        <td>Interquartile Range (IQR)</td>
+                        <td>0.0679</td>
+                    </tr>
+                    <tr>
+                        <td>Skewness</td>
+                        <td>0.1508</td>
+                    </tr>
+                    <tr>
+                        <td>Kurtosis</td>
+                        <td>-0.4820</td>
+                    </tr>
+                </table>
+            </section>
+            <section>
+                <p>This is the average of 50 CATE values, indicating an increase in 0.1836 Goals per match when VAR is used. The standard deviation (0.0416) is quite small, showing that the values are fairly consistent. The negative skewness and kurtosis suggests the normal curve of these CATE values is slightly flatter and most of the values are towards the higher end, with a flatter curve towards the smaller end. Overall a small but non-zero increase in goals scored.</p>
+                <h2>Which Teams Have Won or Lost?</h2>
+                <p>Due to the nature of football, we cannot attribute the changing performances of teams solely on VAR, much like the rest of the measurements. But what we can do is see which teams have done proportionally better or worse since then. This can have a significant effect on people’s view on VAR, especially if the team which you support is doing worse than before VAR.</p>
+                <p>In order to measure this we can calculate the number of points earned for each team, before and after the introduction of VAR. We can then divide that by the number of games played before and after VAR, to find the points per game, before and after VAR, for each team. I have excluded teams which have not participated in the EPL in both post and pre-VAR periods:</p>
+                
+            </section>
+
+
+
+
+
+
+
             
           
           
