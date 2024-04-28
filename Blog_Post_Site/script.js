@@ -132,12 +132,12 @@ function initializeCardsChart(canvasId) {
                             position: 'left',
                             suggestedMin: 0,
                             ticks: {
-                                fontColor: 'rgb(255, 205, 86)'  // Yellow color for the ticks
+                                color: 'rgb(255, 205, 86)'  // Sets color for tick labels on the yellow card axis
                             },
-                            scaleLabel: {
+                            title: {  // Uses 'title' instead of 'scaleLabel' for Chart.js 3.x onwards
                                 display: true,
-                                labelString: 'Yellow Cards',
-                                fontColor: 'rgb(255, 205, 86)',  // Yellow color for the axis label
+                                text: 'Yellow Cards',
+                                color: 'rgb(255, 205, 86)'  // Sets color for the axis title
                             }
                         },
                         'y-axis-red': {
@@ -146,15 +146,15 @@ function initializeCardsChart(canvasId) {
                             suggestedMin: 0,
                             suggestedMax: 200,
                             ticks: {
-                                fontColor: 'rgb(255, 99, 71)'  // Red color for the ticks
+                                color: 'rgb(255, 99, 71)'  // Sets color for tick labels on the red card axis
                             },
-                            scaleLabel: {
+                            title: {  // Uses 'title' instead of 'scaleLabel'
                                 display: true,
-                                labelString: 'Red Cards',
-                                fontColor: 'rgb(255, 99, 71)',  // Red color for the axis label
+                                text: 'Red Cards',
+                                color: 'rgb(255, 99, 71)'  // Sets color for the axis title
                             },
-                            gridLines: {
-                                drawOnChartArea: false
+                            grid: {
+                                drawOnChartArea: false  // Ensures grid lines do not overlap with the yellow axis
                             }
                         }
                     },
@@ -171,6 +171,7 @@ function initializeCardsChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
 
 
 
