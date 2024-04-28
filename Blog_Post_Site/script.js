@@ -1,50 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const charts = {};  // Object to store chart instances
+
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             const canvasId = entry.target.querySelector('canvas').id;
-            if (entry.isIntersecting) {
-                // Initialize or re-initialize the chart when the element comes into view
+
+            // Destroy existing chart instance when it goes out of view
+            if (!entry.isIntersecting) {
+                if (charts[canvasId]) {
+                    charts[canvasId].destroy();  // Destroy the chart instance
+                    charts[canvasId] = null;  // Clear the reference
+                }
+                entry.target.style.opacity = 0; // Optionally hide the element visually
+                return;  // Skip further processing since the entry is not intersecting
+            }
+
+            // Initialize or re-initialize the chart when the element comes into view
+            if (!charts[canvasId]) {  // Check if chart does not already exist
                 switch(entry.target.id) {
                     case 'graph1':
-                        initializeFoulsChart(canvasId);
+                        charts[canvasId] = initializeFoulsChart(canvasId);
                         break;
                     case 'graph2':
-                        initializeYellowCardsChart(canvasId);
+                        charts[canvasId] = initializeYellowCardsChart(canvasId);
                         break;
                     case 'graph3':
-                        initializeRedCardsChart(canvasId);
+                        charts[canvasId] = initializeRedCardsChart(canvasId);
                         break;
                     case 'graph4':
-                        initializeGoalsChart(canvasId);
+                        charts[canvasId] = initializeGoalsChart(canvasId);
                         break;
                     case 'graph5':
-                        initializeHomeAndAwayGoalsChart(canvasId);
+                        charts[canvasId] = initializeHomeAndAwayGoalsChart(canvasId);
                         break;
                     case 'graph6':
-                        initializeHomeAndAwayGoalsRatioChart(canvasId);
+                        charts[canvasId] = initializeHomeAndAwayGoalsRatioChart(canvasId);
                         break;
                     case 'graph7':
-                        initializeTeamPerformanceChart(canvasId);
+                        charts[canvasId] = initializeTeamPerformanceChart(canvasId);
                         break;
                     case 'graph8':
-                        initializeCardsChart(canvasId);
+                        charts[canvasId] = initializeCardsChart(canvasId);
                         break;
                     // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
-            } else {
-                // Clear the chart when it goes out of view
-                let chartInstance = Chart.getChart(canvasId); // Get the Chart instance
-                if (chartInstance) {
-                    chartInstance.destroy(); // Destroy the chart instance
-                }
-                entry.target.style.opacity = 0; // Hide the element visually
             }
         });
     }, {
-        root: null, // Default setting: viewport
-        rootMargin: '0px', // No margin
-        threshold: [0, 0.1, 0.9, 1] // This array means the callback will trigger at 0%, 10%, 90%, and 100% visibility
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
     });
 
     // Observe all graph containers
@@ -58,6 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure dimensions are recalibrated on window resize
     window.addEventListener('resize', adjustGraphDimensions);
 });
+
+function adjustGraphDimensions() {
+    // Adjust the height of each graph to match its width
+    const graphs = document.querySelectorAll('.graph-container canvas');
+    graphs.forEach(function(canvas) {
+        const width = canvas.offsetWidth; // Get the actual width of the canvas
+        canvas.style.height = width + 'px'; // Set the height equal to the width
+    });
+}
+
 
 
 
