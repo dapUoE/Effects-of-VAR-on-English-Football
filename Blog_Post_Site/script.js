@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 entry.target.style.opacity = 1;
             } else {
-                // Optional: clear the chart when it goes out of view
+                // Clear the chart when it goes out of view
                 let chartInstance = Chart.getChart(canvasId); // Get the Chart instance
                 if (chartInstance) {
                     chartInstance.destroy(); // Destroy the chart instance
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
+        root: null, // Default setting: viewport
+        rootMargin: '0px', // No margin
+        threshold: [0, 0.1, 0.9, 1] // This array means the callback will trigger at 0%, 10%, 90%, and 100% visibility
     });
 
     // Observe all graph containers
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure dimensions are recalibrated on window resize
     window.addEventListener('resize', adjustGraphDimensions);
 });
+
 
 
 function adjustGraphDimensions() {
