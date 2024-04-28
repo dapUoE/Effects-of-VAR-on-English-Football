@@ -1,37 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
+            const canvasId = entry.target.querySelector('canvas').id;
             if (entry.isIntersecting) {
-                // Determine which chart to initialize based on the container ID
+                // Initialize or re-initialize the chart when the element comes into view
                 switch(entry.target.id) {
                     case 'graph1':
-                        initializeFoulsChart(entry.target.querySelector('canvas').id);
+                        initializeFoulsChart(canvasId);
                         break;
                     case 'graph2':
-                        initializeYellowCardsChart(entry.target.querySelector('canvas').id);
+                        initializeYellowCardsChart(canvasId);
                         break;
                     case 'graph3':
-                        initializeRedCardsChart(entry.target.querySelector('canvas').id);
+                        initializeRedCardsChart(canvasId);
                         break;
                     case 'graph4':
-                        initializeGoalsChart(entry.target.querySelector('canvas').id);
+                        initializeGoalsChart(canvasId);
                         break;
                     case 'graph5':
-                        initializeHomeAndAwayGoalsChart(entry.target.querySelector('canvas').id);
+                        initializeHomeAndAwayGoalsChart(canvasId);
                         break;
                     case 'graph6':
-                        initializeHomeAndAwayGoalsRatioChart(entry.target.querySelector('canvas').id);
+                        initializeHomeAndAwayGoalsRatioChart(canvasId);
                         break;
                     case 'graph7':
-                        initializeTeamPerformanceChart(entry.target.querySelector('canvas').id);
+                        initializeTeamPerformanceChart(canvasId);
                         break;
                     case 'graph8':
-                        initializeCardsChart(entry.target.querySelector('canvas').id);
+                        initializeCardsChart(canvasId);
                         break;
                     // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
-                observer.unobserve(entry.target); // Stop observing once initialized
+            } else {
+                // Optional: clear the chart when it goes out of view
+                let chartInstance = Chart.getChart(canvasId); // Get the Chart instance
+                if (chartInstance) {
+                    chartInstance.destroy(); // Destroy the chart instance
+                }
+                entry.target.style.opacity = 0; // Hide the element visually
             }
         });
     }, {
@@ -51,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure dimensions are recalibrated on window resize
     window.addEventListener('resize', adjustGraphDimensions);
 });
+
 
 function adjustGraphDimensions() {
     // Adjust the height of each graph to match its width

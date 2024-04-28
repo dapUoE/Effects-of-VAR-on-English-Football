@@ -6,6 +6,7 @@ https://dapuoe.github.io/Effects-of-VAR-on-English-Football/Blog_Post_Site/blog_
 NOTE:
 The blog does not work well on mobile devices. If you need to view this on a mobile device, I suggest using the file "Analysing the effects of VAR on English Football Blog.pdf", which is the PDF version of the blog, with slightly worse looking graphs.
 For the best viewing experience, I suggest viewing the blog on a laptop through  clicking the link.
+Also, I added animations to each graph, so reload the page if you missed them!
 
 
 GitHub repository:
