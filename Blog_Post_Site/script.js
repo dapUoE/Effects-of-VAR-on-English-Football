@@ -131,14 +131,15 @@ function initializeCardsChart(canvasId) {
                             type: 'linear',
                             position: 'left',
                             grace: '5%',
-                            suggestedMin: 0 // Ensures the scale starts at zero
+                            suggestedMin: 0, // Explicitly sets minimum to 0
+                            suggestedMax: 200  // Optional adjustment based on your dataset
                         },
                         'y-axis-red': {
                             type: 'linear',
                             position: 'right',
                             grace: '5%',
-                            suggestedMin: 0, // Ensures the scale starts at zero
-                            suggestedMax: 200, // Sets the maximum value to 200
+                            suggestedMin: 0, // Explicitly sets minimum to 0
+                            suggestedMax: 200, // Adjusted maximum to 200
                             grid: {
                                 drawOnChartArea: false // Only draw grid for this axis on its own side
                             }
