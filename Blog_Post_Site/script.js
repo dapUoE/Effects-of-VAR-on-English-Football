@@ -1,3 +1,20 @@
+// A function to record whether a toggle switch is on or off
+function toggleSwitch() {
+    // Get the toggle switch element
+    const toggle = document.getElementById('toggle');
+    // Get the current state of the toggle switch
+    const toggleState = toggle.checked;
+    // Log the state of the toggle switch
+    console.log('Toggle switch is ' + (toggleState ? 'on' : 'off'));
+    // To use the logic of the toggle switch to chamge how a graph is displayed, use the following code
+    // if (toggleState) {
+    //     // Code to display the graph in a certain way when the toggle switch is on
+    // } else {
+    //     // Code to display the graph in a certain way when the toggle switch is off
+    // }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -161,7 +178,7 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
     }, 'Goal_Diff');  // Pass the specific field name here
 }
 
-function initializeTeamPerformanceChart(canvasId) {
+function initializeTeamPerformanceChart(canvasId, sortByTotalPoints = false) {
     fetch('team_data.json')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
@@ -170,6 +187,10 @@ function initializeTeamPerformanceChart(canvasId) {
         .then(data => {
             if (!data || !Array.isArray(data) || !data.length) {
                 throw new Error('Data is empty or not properly formatted');
+            }
+
+            if (sortByTotalPoints) {
+                data.sort((a, b) => ((b.Points_Per_Game_Pre_VAR + b.Points_Per_Game_Post_VAR) - (a.Points_Per_Game_Pre_VAR + a.Points_Per_Game_Post_VAR)));
             }
 
             const teamLabels = data.map(item => item.Team);
@@ -246,6 +267,13 @@ function initializeTeamPerformanceChart(canvasId) {
             console.error('Error initializing chart:', error);
         });
 }
+
+// Event listener for the toggle button
+document.getElementById('toggleOrder').addEventListener('click', function() {
+    // Assuming the chart is in a canvas with id 'teamPerformanceCanvas'
+    initializeTeamPerformanceChart('teamPerformanceCanvas', true);
+});
+
 
 
 
