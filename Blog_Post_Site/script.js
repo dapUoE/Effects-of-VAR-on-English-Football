@@ -113,7 +113,7 @@ function initializeCardsChart(canvasId) {
                         borderColor: 'rgb(255, 205, 86)',
                         backgroundColor: 'rgba(255, 205, 86, 0.5)',
                         yAxisID: 'y-axis-yellow',
-                        fill: true,
+                        fill: false,
                         tension: 0.1
                     }, {
                         label: 'Red Cards Per Season',
@@ -121,7 +121,7 @@ function initializeCardsChart(canvasId) {
                         borderColor: 'rgb(255, 99, 71)',
                         backgroundColor: 'rgba(255, 99, 71, 0.5)',
                         yAxisID: 'y-axis-red',
-                        fill: true,
+                        fill: false,
                         tension: 0.1
                     }]
                 },
