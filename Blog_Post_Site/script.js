@@ -130,30 +130,30 @@ function initializeCardsChart(canvasId) {
                         'y-axis-yellow': {
                             type: 'linear',
                             position: 'left',
-                            grace: '5%',
                             suggestedMin: 0,
+                            ticks: {
+                                fontColor: 'rgb(255, 205, 86)'  // Yellow color for the ticks
+                            },
                             scaleLabel: {
                                 display: true,
                                 labelString: 'Yellow Cards',
-                                fontColor: 'rgb(255, 205, 86)'  // Sets the label color to yellow
-                            },
-                            gridLines: {
-                                color: 'rgba(255, 205, 86, 0.3)'  // Light yellow grid lines
+                                fontColor: 'rgb(255, 205, 86)',  // Yellow color for the axis label
                             }
                         },
                         'y-axis-red': {
                             type: 'linear',
                             position: 'right',
-                            grace: '5%',
                             suggestedMin: 0,
                             suggestedMax: 200,
+                            ticks: {
+                                fontColor: 'rgb(255, 99, 71)'  // Red color for the ticks
+                            },
                             scaleLabel: {
                                 display: true,
                                 labelString: 'Red Cards',
-                                fontColor: 'rgb(255, 99, 71)'  // Sets the label color to red
+                                fontColor: 'rgb(255, 99, 71)',  // Red color for the axis label
                             },
                             gridLines: {
-                                color: 'rgba(255, 99, 71, 0.3)',  // Light red grid lines
                                 drawOnChartArea: false
                             }
                         }
@@ -171,6 +171,7 @@ function initializeCardsChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
 
 
 
