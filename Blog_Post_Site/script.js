@@ -112,6 +112,7 @@ function initializeCardsChart(canvasId) {
                         data: yellowCards,
                         borderColor: 'rgb(255, 205, 86)',
                         backgroundColor: 'rgba(255, 205, 86, 0.5)',
+                        yAxisID: 'y-axis-yellow',
                         fill: true,
                         tension: 0.1
                     }, {
@@ -119,6 +120,7 @@ function initializeCardsChart(canvasId) {
                         data: redCards,
                         borderColor: 'rgb(255, 99, 71)',
                         backgroundColor: 'rgba(255, 99, 71, 0.5)',
+                        yAxisID: 'y-axis-red',
                         fill: true,
                         tension: 0.1
                     }]
@@ -128,7 +130,22 @@ function initializeCardsChart(canvasId) {
                         y: {
                             type: 'linear',
                             grace: '5%',
-                            position: 'left'
+                            display: false // This general Y-axis will not be displayed
+                        },
+                        'y-axis-yellow': {
+                            type: 'linear',
+                            position: 'left',
+                            grace: '5%',
+                            suggestedMin: 0 // Ensures the scale starts at zero
+                        },
+                        'y-axis-red': {
+                            type: 'linear',
+                            position: 'right',
+                            grace: '5%',
+                            suggestedMin: 0, // Ensures the scale starts at zero
+                            grid: {
+                                drawOnChartArea: false // Only draw grid for this axis on its own side
+                            }
                         }
                     },
                     animation: {
@@ -144,6 +161,7 @@ function initializeCardsChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
 
 
 function initializeGoalsChart(canvasId) {
