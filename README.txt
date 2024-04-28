@@ -26,6 +26,17 @@ This file is where the bulk of the analysis takes place. You can see a lot of da
 In order to use this file for yourself, you must clone the github repository on your local machine, and change the path to point to the data folder included in the GitHub repository. This is indicated quite clearly in the jupyter file itself.
 
 The rest of the file will run off of that, provided that all of the files remain unchanged and in the same directories.
+
+I used python 3.11.9. You may use other versions, but it could lead to compatability errors.
+
+you will need to install the necessary libraries:
+-pandas
+-os
+-re
+-matplotlib
+-IPython
+-sklearn
+-econml
 ---------------------
 Output.pdf
 
@@ -52,7 +63,3 @@ blog_post.html is a basic html file, I have provided small amounts of comments, 
 script.js is where almost all of the logic is. I have used javascript to recreate the graphs produced in python. For your convenience, I have attached a normal pdf version of the blog in the main directory so you can see the python graphs instead if you wish. I have also put in a lot of comments to help understand how all of the logic works.
 
 styles.css is very minor and contains some styling for various elements on the web page.
-
-
-
-
