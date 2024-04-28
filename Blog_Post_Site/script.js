@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'graph7':
                         initializeTeamPerformanceChart(entry.target.querySelector('canvas').id);
                         break;
-                        
+                    case 'graph8':
+                        initializeCardsChart(entry.target.querySelector('canvas').id);
+                        break;
                     // Add cases for additional graphs as needed
                 }
                 entry.target.style.opacity = 1;
@@ -87,6 +89,62 @@ function initializeRedCardsChart(canvasId) {
         backgroundColor: 'rgba(255, 99, 71, 0.5)'
     }, 'Total_Reds');  // Pass the specific field name here
 }
+
+function initializeCardsChart(canvasId) {
+    fetch('foul_data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const seasons = data.map(item => item.Season);
+            const yellowCards = data.map(item => item.Total_Yellows);
+            const redCards = data.map(item => item.Total_Reds);
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const cardsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: seasons,
+                    datasets: [{
+                        label: 'Yellow Cards Per Season',
+                        data: yellowCards,
+                        borderColor: 'rgb(255, 205, 86)',
+                        backgroundColor: 'rgba(255, 205, 86, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }, {
+                        label: 'Red Cards Per Season',
+                        data: redCards,
+                        borderColor: 'rgb(255, 99, 71)',
+                        backgroundColor: 'rgba(255, 99, 71, 0.5)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            grace: '5%',
+                            position: 'left'
+                        }
+                    },
+                    animation: {
+                        duration: 2000
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error loading the data:', error);
+            alert('Failed to load data: ' + error.message);
+        });
+}
+
 
 function initializeGoalsChart(canvasId) {
     // Fetch data and initialize the goals chart

@@ -27,6 +27,10 @@ In order to use this file for yourself, you must clone the github repository on 
 
 The rest of the file will run off of that, provided that all of the files remain unchanged and in the same directories.
 ---------------------
+Output.pdf
+
+This pdf shows the outputs of all of the sections of VAR_Analysis.ipynb
+---------------------
 Blog_Post_Site
 -blog_post.html
 -script.js
