@@ -31,6 +31,10 @@ Output.pdf
 
 This pdf shows the outputs of all of the sections of VAR_Analysis.ipynb
 ---------------------
+Analysing_the_effects_of_VAR_on_English_Football_Blog.pdf
+
+This file is the pdf version of the blog, containing the python versions of the graphs. I did this to ensure that if there are issues with the website, or yo uwish to see the python outputs, then this provides a simple solution.
+---------------------
 Blog_Post_Site
 -blog_post.html
 -script.js
@@ -43,6 +47,11 @@ This directory contains all of the code for the blog post website. blog_post.htm
 
 the .json files are used to contruct the interactive graphs on the blog website, and they have been made up of the data analysis in VAR_Analysis.ipynb in the parent directory. None of these files need to be edited as GitHub has taken care of the hosting of the website, and the link to it is provided in blog.txt in the parent directory.
 
+blog_post.html is a basic html file, I have provided small amounts of comments, but the code is quite easy to understand.
+
+script.js is where almost all of the logic is. I have used javascript to recreate the graphs produced in python. For your convenience, I have attached a normal pdf version of the blog in the main directory so you can see the python graphs instead if you wish. I have also put in a lot of comments to help understand how all of the logic works.
+
+styles.css is very minor and contains some styling for various elements on the web page.
 
 
 

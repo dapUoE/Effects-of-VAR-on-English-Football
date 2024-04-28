@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--This is just the head. It has certain file details-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!--This is the blog post content, starting with the header, and then the following content-->
     <header>
         <h1>Analyzing the effects of VAR on English Football</h1>
     </header>
@@ -28,7 +30,6 @@
                  been tainted with the introduction of VAR. With almost daily controversy, inconsistent decision-making, and constant
                   discussion over whether it makes the game better.</p>
             <p>So I set out to find… HOW much has VAR had an effect on the English Premier League?</p>
-
             <h2>Fouls</h2>
             <p>Video Assistant Referee (VAR) corrects on-field officiating mistakes. On the surface this seems
                  like a great idea to reduce controversy, but in reality it has multiple negative effects on the game like
@@ -44,6 +45,7 @@
             <p>We can first visualize how fouls have been affected by measuring the amount of fouls committed per season:</p>
 
             </section>
+            <!--This is the first of multiple graphs-->
             <section id="graph1" class="graph-container">
                 <div style="width:80%; margin: 20px auto;">
                     <canvas id="foulsChart"></canvas>
@@ -104,6 +106,7 @@
                 <p>We used these variables as these were the only variables with no missing data from the dataset used, in order to make the testing as fair as possible. Below is the Conditional Average Treatment Effect (CATE) of VAR on goals scored. I have taken a mean of multiple CATE results, as there can be some variation:</p>
             </section>
             <section>
+                <!--This is a table of statistics-->
                 <table>
                     <tr>
                         <th>Statistic</th>
@@ -175,10 +178,12 @@
                 <p>VAR is back in the Premier League! How it’s changed for 2020-21. (2020, September 9). Retrieved from <a href="https://www.espn.com/soccer/story/_/id/37586847/var-back-premier-league-how-changed-2020-21" target="_blank">ESPN.com</a>.</p>
             </section>
         </article> 
+    <!--This is the footer of the blog post-->
     <footer>
         <p>Copyright © 710046740</p>
     </footer>
         
+    <!--This is the script section, which contains the JavaScript for the graphs-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>

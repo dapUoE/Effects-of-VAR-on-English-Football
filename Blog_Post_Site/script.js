@@ -1,3 +1,11 @@
+
+// This script uses Chart.js to create interactive charts for the blog post site.
+// document.addEventListener('DOMContentLoaded', () => {, this function is called when the DOM is fully loaded.
+// The IntersectionObserver is used to detect when the graph containers come into view.
+// The observer is set to trigger when the graph container is 50% in view.
+// The observer calls the appropriate initialization function based on the graph container ID.
+// The adjustGraphDimensions function is called to set the height of each graph container to match its width.
+// The window resize event listener is added to call adjustGraphDimensions when the window is resized.
 document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -59,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', adjustGraphDimensions);
 });
 
-
+// Function to adjust the height of each graph container to match its width
 function adjustGraphDimensions() {
     // Adjust the height of each graph to match its width
     const graphs = document.querySelectorAll('.graph-container canvas');
@@ -69,6 +77,7 @@ function adjustGraphDimensions() {
     });
 }
 
+// Function to initialize the fouls chart
 function initializeFoulsChart(canvasId) {
     // Fetch data and initialize the fouls chart
     fetchChartData('foul_data.json', canvasId, {
@@ -78,6 +87,7 @@ function initializeFoulsChart(canvasId) {
     }, 'Total_Fouls');  // Pass the specific field name here
 }
 
+// Function to initialize the yellow cards chart
 function initializeYellowCardsChart(canvasId) {
     // Fetch data and initialize the cards chart
     fetchChartData('foul_data.json', canvasId, {
@@ -88,6 +98,7 @@ function initializeYellowCardsChart(canvasId) {
     }, 'Total_Yellows');  // Pass the specific field name here
 }
 
+// Function to initialize the red cards chart
 function initializeRedCardsChart(canvasId) {
     // Fetch data and initialize the red cards chart
     fetchChartData('foul_data.json', canvasId, {
@@ -98,6 +109,7 @@ function initializeRedCardsChart(canvasId) {
     }, 'Total_Reds');  // Pass the specific field name here
 }
 
+// Function to initialize the red and yellow cards chart
 function initializeCardsChart(canvasId) {
     fetch('foul_data.json')
         .then(response => {
@@ -180,12 +192,7 @@ function initializeCardsChart(canvasId) {
         });
 }
 
-
-
-
-
-
-
+// Function to initialize the goals chart
 function initializeGoalsChart(canvasId) {
     // Fetch data and initialize the goals chart
     fetchChartData('goal_data.json', canvasId, {
@@ -195,6 +202,7 @@ function initializeGoalsChart(canvasId) {
     }, 'Total_Goals');  // Pass the specific field name here
 }
 
+// Function to initialize the home and away goals chart
 function initializeHomeAndAwayGoalsChart(canvasId) {
     fetch('goal_data.json')
     .then(response => {
@@ -250,6 +258,7 @@ function initializeHomeAndAwayGoalsChart(canvasId) {
     });
 }
 
+// Function to initialize the home and away goal difference chart
 function initializeHomeAndAwayGoalsRatioChart(canvasId) {
     // Fetch data and initialize the home and away goals ratio chart
     fetchChartData('goal_data.json',canvasId, {
@@ -259,6 +268,7 @@ function initializeHomeAndAwayGoalsRatioChart(canvasId) {
     }, 'Goal_Diff');  // Pass the specific field name here
 }
 
+// Function to initialize the team performance chart
 function initializeTeamPerformanceChart(canvasId) {
     fetch('team_data.json')
         .then(response => {
@@ -345,16 +355,9 @@ function initializeTeamPerformanceChart(canvasId) {
         });
 }
 
-
-
-
-
-
-
-
-
-
+// Function to fetch data and create a line chart
 function fetchChartData(url, canvasId, chartConfig, dataField) {
+    //
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -362,6 +365,7 @@ function fetchChartData(url, canvasId, chartConfig, dataField) {
             }
             return response.json();
         })
+        // Process the data and create the chart
         .then(data => {
             const seasons = data.map(item => item.Season);
             const values = data.map(item => item[dataField]);
