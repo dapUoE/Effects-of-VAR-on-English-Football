@@ -271,7 +271,7 @@ function initializeTeamPerformanceChart(canvasId, sortByTotalPoints = false) {
 // Event listener for the toggle button
 document.getElementById('toggleOrder').addEventListener('click', function() {
     // Assuming the chart is in a canvas with id 'teamPerformanceCanvas'
-    initializeTeamPerformanceChart(entry.target.querySelector('canvas').id);
+    initializeTeamPerformanceChart('teamPerformanceCanvas', true);
 });
 
 
