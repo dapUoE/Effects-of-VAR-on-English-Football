@@ -3,4 +3,13 @@ This file provides the links to my blog page hosted on GitHub pages, and my GitH
 Blog Link:
 https://dapuoe.github.io/Effects-of-VAR-on-English-Football/Blog_Post_Site/blog_post.html
 
-GitHub https://github.com/dapUoE/Effects-of-VAR-on-English-FootballFootball:
+NOTE:
+The blog does not work well on mobile devices. If you need to view this on a mobile device, I suggest using the file "Analysing the effects of VAR on English Football Blog.pdf", which is the PDF version of the blog, with slightly worse looking graphs.
+For the best viewing experience, I suggest viewing the blog on a laptop through  clicking the link.
+
+
+GitHub repository:
+https://github.com/dapUoE/Effects-of-VAR-on-English-Football
+
+
+
