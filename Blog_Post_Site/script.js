@@ -127,11 +127,6 @@ function initializeCardsChart(canvasId) {
                 },
                 options: {
                     scales: {
-                        y: {
-                            type: 'linear',
-                            grace: '5%',
-                            display: false // This general Y-axis will not be displayed
-                        },
                         'y-axis-yellow': {
                             type: 'linear',
                             position: 'left',
