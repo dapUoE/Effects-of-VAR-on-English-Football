@@ -143,6 +143,7 @@ function initializeCardsChart(canvasId) {
                             position: 'right',
                             grace: '5%',
                             suggestedMin: 0, // Ensures the scale starts at zero
+                            suggestedMax: 200, // Sets the maximum value to 200
                             grid: {
                                 drawOnChartArea: false // Only draw grid for this axis on its own side
                             }
@@ -161,6 +162,7 @@ function initializeCardsChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
 
 
 
