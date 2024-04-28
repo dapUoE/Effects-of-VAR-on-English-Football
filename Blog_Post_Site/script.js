@@ -113,7 +113,7 @@ function initializeCardsChart(canvasId) {
                         borderColor: 'rgb(255, 205, 86)',
                         backgroundColor: 'rgba(255, 205, 86, 0.5)',
                         yAxisID: 'y-axis-yellow',
-                        fill: false,
+                        fill: true,
                         tension: 0.1
                     }, {
                         label: 'Red Cards Per Season',
@@ -121,7 +121,7 @@ function initializeCardsChart(canvasId) {
                         borderColor: 'rgb(255, 99, 71)',
                         backgroundColor: 'rgba(255, 99, 71, 0.5)',
                         yAxisID: 'y-axis-red',
-                        fill: false,
+                        fill: true,
                         tension: 0.1
                     }]
                 },
@@ -131,17 +131,30 @@ function initializeCardsChart(canvasId) {
                             type: 'linear',
                             position: 'left',
                             grace: '5%',
-                            suggestedMin: 0, // Explicitly sets minimum to 0
-                            suggestedMax: 200  // Optional adjustment based on your dataset
+                            suggestedMin: 0,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Yellow Cards',
+                                fontColor: 'rgb(255, 205, 86)'  // Sets the label color to yellow
+                            },
+                            gridLines: {
+                                color: 'rgba(255, 205, 86, 0.3)'  // Light yellow grid lines
+                            }
                         },
                         'y-axis-red': {
                             type: 'linear',
                             position: 'right',
                             grace: '5%',
-                            suggestedMin: 0, // Explicitly sets minimum to 0
-                            suggestedMax: 200, // Adjusted maximum to 200
-                            grid: {
-                                drawOnChartArea: false // Only draw grid for this axis on its own side
+                            suggestedMin: 0,
+                            suggestedMax: 200,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Red Cards',
+                                fontColor: 'rgb(255, 99, 71)'  // Sets the label color to red
+                            },
+                            gridLines: {
+                                color: 'rgba(255, 99, 71, 0.3)',  // Light red grid lines
+                                drawOnChartArea: false
                             }
                         }
                     },
@@ -158,6 +171,7 @@ function initializeCardsChart(canvasId) {
             alert('Failed to load data: ' + error.message);
         });
 }
+
 
 
 
